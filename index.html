@@ -1,1 +1,1407 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>나만의 냉장고 — 히어로 이미지 데모</title>
+<style>
+  :root{
+    --bg: #F4F6F0;
+    --ink: #16211B;
+    --ink-soft: #4A564E;
+    --brand: #1F5C4B;
+    --brand-deep: #163F33;
+    --surface: #FFFFFF;
+    --line: #DBE1D3;
+    --fresh: #4C8F52;
+    --fresh-bg: #E6F0E4;
+    --soon: #C58A2E;
+    --soon-bg: #F5EAD4;
+    --bad: #AE4632;
+    --bad-bg: #F2E1DC;
 
+    --serif: Georgia, "Iowan Old Style", "Noto Serif KR", ui-serif, serif;
+    --sans: -apple-system, "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, "D2Coding", monospace;
+  }
+
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); }
+
+  .eyebrow{
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin: 0 0 14px;
+  }
+
+  /* ---- hero (screen 1) ---- */
+  .hero-screen{
+    background: linear-gradient(135deg, #EAF3DF 0%, #CFE7C0 50%, #AEDA9C 100%);
+  }
+  .hero-shell{ max-width: 1180px; margin: 0 auto; padding: 30px 32px 70px; }
+
+  .topbar{
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; margin-bottom: 64px; flex-wrap: wrap;
+  }
+  .topbar .logo{
+    font-family: var(--sans); font-weight: 800; font-size: 21px;
+    letter-spacing: -0.01em; color: var(--ink);
+  }
+  .topbar nav{ display: flex; gap: 26px; }
+  .topbar nav button{
+    font-family: var(--sans); font-weight: 600; font-size: 14px;
+    color: var(--ink); opacity: 0.72; background: none; border: none; cursor: pointer; padding: 0;
+    transition: opacity 0.15s;
+  }
+  .topbar nav button:hover{ opacity: 1; }
+  .topbar-pill{
+    font-family: var(--sans); font-weight: 700; font-size: 13px;
+    color: var(--ink); background: rgba(255,255,255,0.75);
+    border: 1px solid rgba(20,30,20,0.14);
+    border-radius: 999px; padding: 9px 18px; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .topbar-pill:hover{ background: #fff; }
+
+  .hero-inner{ display: flex; align-items: center; gap: 56px; }
+  .hero-copy{ flex: 1 1 42%; min-width: 280px; }
+  .hero-eyebrow{
+    display: flex; align-items: center; gap: 7px;
+    font-family: var(--sans); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.08em; color: var(--brand-deep); margin: 0 0 20px;
+  }
+  .hero-copy h1{
+    font-family: var(--serif); font-weight: 800; font-size: clamp(38px, 4.6vw, 56px);
+    line-height: 1.1; color: var(--ink); margin: 0 0 22px; text-wrap: balance; letter-spacing: -0.01em;
+  }
+  .hero-sub{
+    font-size: 16px; color: var(--ink); opacity: 0.72; max-width: 36ch; margin: 0 0 28px;
+  }
+  .hero-status{
+    font-family: var(--sans); font-weight: 800; font-size: 18px; color: var(--ink); margin: 0 0 24px;
+  }
+  .hero-cta-row{ display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .hero-cta{
+    font-family: var(--sans); font-weight: 700; font-size: 15px;
+    color: #fff; background: var(--ink); border: none; border-radius: 999px;
+    padding: 15px 28px; cursor: pointer; transition: background 0.15s;
+  }
+  .hero-cta:hover{ background: #000; }
+  .hero-cta:focus-visible{ outline: 2px solid var(--ink); outline-offset: 3px; }
+  .hero-link{
+    font-family: var(--sans); font-weight: 600; font-size: 13.5px; color: var(--ink);
+    background: none; border: none; padding: 0; cursor: pointer; text-decoration: underline;
+    text-underline-offset: 3px; opacity: 0.8;
+  }
+  .hero-link:hover{ opacity: 1; }
+  .hero-disclaimer{ margin: 26px 0 0; font-size: 12px; color: var(--ink); opacity: 0.5; max-width: 40ch; }
+
+  .hero-visual{ flex: 1 1 56%; min-width: 300px; }
+  .stage-card{
+    background: var(--surface); border-radius: 26px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(15,35,20,0.22);
+  }
+  .stage-demo{ padding: 26px 24px 22px; }
+  .stage-barfoot{
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    background: var(--ink); color: #fff; padding: 14px 20px; flex-wrap: wrap;
+  }
+  .stage-barfoot .stage-caption{
+    margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.82);
+    max-width: 58%; min-height: 0;
+  }
+  .stage-barfoot .stage-tabs{ margin-bottom: 0; flex: none; }
+  .stage-barfoot .tab{ background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.32); color: #fff; }
+  .stage-barfoot .tab:hover{ border-color: rgba(255,255,255,0.6); }
+  .stage-barfoot .tab.active{ background: #fff; color: var(--ink); border-color: #fff; }
+
+  @media (max-width: 900px){
+    .hero-inner{ flex-direction: column; align-items: stretch; }
+    .topbar nav{ display: none; }
+  }
+
+  .topbar nav button.active{ opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+  /* ---- slides (screen 2) ---- */
+  .slide[hidden]{ display: none; }
+  .slide.enter{ animation: screenIn 0.35s ease; }
+
+  .mini-feature{
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 2px; border-bottom: 1px solid var(--line);
+  }
+  .mini-feature:last-child{ border-bottom: none; }
+  .mini-feature .stamp{ margin-bottom: 0; flex: none; }
+  .mini-feature-text h4{ margin: 0 0 3px; font-family: var(--serif); font-weight: 400; font-size: 15px; }
+  .mini-feature-text p{ margin: 0; font-size: 12.5px; color: var(--ink-soft); }
+
+  .slide-flow{ display: flex; align-items: flex-start; justify-content: space-between; gap: 4px; position: relative; padding: 4px 4px 0; }
+  .slide-flow::before{
+    content: ""; position: absolute; left: 20px; right: 20px; top: 17px; height: 1px; background: var(--line); z-index: 0;
+  }
+  .slide-flow-step{ position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; flex: 1; text-align: center; }
+  .slide-flow-step .node{
+    width: 34px; height: 34px; border-radius: 50%; background: var(--surface);
+    border: 2px solid var(--brand); display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-weight: 700; font-size: 12px; color: var(--brand);
+  }
+  .slide-flow-step span{ font-size: 10.5px; color: var(--ink-soft); max-width: 70px; }
+
+  .slide-flow-caption{ margin: 0 0 16px; font-size: 13px; color: var(--ink-soft); }
+  .slide-trust{ font-size: 13px; color: var(--ink); opacity: 0.68; margin: 0 0 20px; max-width: 40ch; }
+  .slide-trust strong{ opacity: 1; font-weight: 700; }
+
+  .ghost-btn{
+    font-family: var(--sans); font-weight: 700; font-size: 13.5px;
+    color: var(--ink); background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(20,30,20,0.18); border-radius: 999px;
+    padding: 11px 20px; cursor: pointer; transition: background 0.15s;
+  }
+  .ghost-btn:hover{ background: rgba(255,255,255,0.85); }
+  .ghost-btn:focus-visible{ outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  .slide-nav{
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 40px; gap: 16px;
+  }
+  .slide-nav-btn{
+    font-family: var(--sans); font-weight: 700; font-size: 14px;
+    border-radius: 999px; padding: 12px 22px; cursor: pointer; border: none;
+    transition: background 0.15s, opacity 0.15s, color 0.15s;
+  }
+  .slide-nav-btn.prev{ background: rgba(255,255,255,0.6); color: var(--ink); border: 1px solid rgba(20,30,20,0.14); }
+  .slide-nav-btn.prev:hover{ background: #fff; }
+  .slide-nav-btn.prev:disabled{ opacity: 0.35; cursor: default; }
+  .slide-nav-btn.next{ background: var(--ink); color: #fff; }
+  .slide-nav-btn.next:hover{ background: #000; }
+  .slide-nav-btn:focus-visible{ outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  .slide-dots{ display: flex; gap: 9px; }
+  .dot{
+    width: 9px; height: 9px; border-radius: 50%; background: rgba(20,30,20,0.22);
+    border: none; padding: 0; cursor: pointer; transition: width 0.2s, border-radius 0.2s, background 0.2s;
+  }
+  .dot.active{ background: var(--ink); width: 22px; border-radius: 5px; }
+
+  @media (max-width: 680px){
+    .recipe-card, .mealkit-row{ flex-direction: column; }
+  }
+
+  .stage-tabs{
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .tab{
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+  }
+  .tab:hover{ border-color: var(--brand); }
+  .tab:focus-visible{ outline: 2px solid var(--brand); outline-offset: 2px; }
+  .tab.active{
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+  }
+
+  .fridge-stage{
+    display: flex;
+    gap: 18px;
+    align-items: stretch;
+    min-height: 300px;
+  }
+
+  .fridge-interior{
+    position: relative;
+    flex: 1 1 58%;
+    background: linear-gradient(180deg, #EEF3EA 0%, #E7EEE3 100%);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 18px 16px;
+    overflow: hidden;
+  }
+
+  .shelf{
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    gap: 22px;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+    border-bottom: 2px solid #CBD6C3;
+  }
+  .shelf:last-child{ border-bottom: none; margin-bottom: 0; }
+
+  .item{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: filter 0.5s ease;
+  }
+  .item svg{ display:block; width: 44px; height: 44px; }
+
+  /* problem state: muted + one flagged item */
+  .fridge-interior[data-scene="problem"] .item{ filter: saturate(0.55) brightness(0.97); }
+  .fridge-interior[data-scene="problem"] .item.flagged{
+    filter: none;
+    outline: 2px solid var(--bad);
+    outline-offset: 4px;
+    border-radius: 10px;
+  }
+  .fridge-interior[data-scene="solution"] .item{ filter: none; }
+
+  .tag{
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .fridge-interior[data-scene="solution"] .tag{ opacity: 1; transform: translateY(0); }
+  .tag.fresh{ background: var(--fresh-bg); color: var(--fresh); }
+  .tag.soon{ background: var(--soon-bg); color: var(--soon); }
+  .tag.bad{ background: var(--bad-bg); color: var(--bad); text-decoration: line-through; }
+
+  .bubble{
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    max-width: 168px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px 12px 2px 12px;
+    padding: 8px 11px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--ink);
+    opacity: 0;
+    transition: opacity 0.4s ease 0.2s;
+    box-shadow: 0 2px 6px rgba(22,33,27,0.06);
+  }
+  .fridge-interior[data-scene="problem"] .bubble{ opacity: 1; }
+
+  .scan-line{
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--brand), transparent);
+    top: 0;
+    opacity: 0;
+  }
+  .fridge-interior[data-scene="solution"] .scan-line{
+    opacity: 0.9;
+    animation: sweep 2.4s ease-in-out infinite;
+  }
+  @keyframes sweep{
+    0%{ top: 8%; opacity: 0; }
+    8%{ opacity: 0.9; }
+    50%{ top: 88%; opacity: 0.9; }
+    92%{ opacity: 0; }
+    100%{ top: 88%; opacity: 0; }
+  }
+
+  .side-panel{
+    flex: 1 1 42%;
+    border: 1px dashed var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    position: relative;
+  }
+  .panel-blank, .panel-list{
+    position: absolute;
+    inset: 16px;
+    transition: opacity 0.4s ease;
+  }
+  .panel-blank{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #9AA69A;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 14px;
+    opacity: 1;
+  }
+  .side-panel[data-scene="solution"] .panel-blank{ opacity: 0; }
+
+  .panel-list{ opacity: 0; display: flex; flex-direction: column; gap: 8px; }
+  .side-panel[data-scene="solution"] .panel-list{ opacity: 1; }
+  .panel-list h3{
+    margin: 0 0 4px;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .list-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+  .list-row .dday{
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .list-row.fresh .dday{ color: var(--fresh); }
+  .list-row.soon .dday{ color: var(--soon); }
+  .list-row.bad .dday{ color: var(--bad); }
+
+  .stage-caption{
+    margin: 18px 2px 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    min-height: 22px;
+  }
+
+  .stamp{
+    display: inline-block;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand);
+    border: 1px solid var(--brand);
+    border-radius: 999px;
+    padding: 3px 9px;
+    margin-bottom: 10px;
+  }
+  /* community mini fridges */
+  .fridge-feed{ display: flex; gap: 10px; flex-wrap: wrap; }
+  .mini-fridge{
+    flex: 1 1 130px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    position: relative;
+  }
+  .mini-fridge .badge{
+    position: absolute; top: 8px; right: 8px;
+    font-family: var(--mono); font-size: 9px;
+    background: var(--fresh-bg); color: var(--fresh);
+    padding: 2px 6px; border-radius: 999px;
+  }
+  .mini-user{ display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+  .avatar{ width: 20px; height: 20px; border-radius: 50%; flex: none; }
+  .mini-user span{ font-size: 12px; font-weight: 600; }
+  .mini-items{ display: flex; gap: 6px; }
+  .mini-items svg{ width: 26px; height: 26px; }
+
+  /* recipe card */
+  .recipe-card{ display: flex; gap: 14px; }
+  .recipe-photo{
+    flex: none; width: 92px; height: 92px; border-radius: 10px;
+    background: linear-gradient(160deg, #EFE7DA, #E4DCC8);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .recipe-photo svg{ width: 54px; height: 54px; }
+  .recipe-info h4{ margin: 0 0 6px; font-family: var(--serif); font-size: 16px; font-weight: 400; }
+  .match-badge{
+    display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 700;
+    background: var(--fresh-bg); color: var(--fresh); padding: 2px 8px; border-radius: 999px; margin-bottom: 9px;
+  }
+  .ingredient-list{ display: flex; flex-direction: column; gap: 5px; }
+  .ingredient-row{ display: flex; align-items: center; gap: 7px; font-size: 12.5px; }
+  .ingredient-row .dot{ width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .ingredient-row.have .dot{ background: var(--fresh); }
+  .ingredient-row.miss .dot{ background: var(--bad); }
+  .ingredient-row.miss span{ color: #9AA69A; }
+
+  /* mealkit */
+  .connector{
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .mealkit-row{ display: flex; gap: 12px; }
+  .mealkit-card{
+    flex: 1; background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px; display: flex; flex-direction: column; gap: 8px;
+  }
+  .mealkit-thumb{
+    height: 60px; border-radius: 8px;
+    background: linear-gradient(160deg, #E7EEE3, #D9E4D2);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mealkit-thumb svg{ width: 32px; height: 32px; }
+  .mealkit-card h5{ margin: 0; font-size: 13px; font-family: var(--sans); font-weight: 600; }
+  .mealkit-price{ font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px; font-weight: 700; }
+  .mealkit-cta{
+    align-self: flex-start; font-family: var(--sans); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.03em; color: var(--brand); border: 1px solid var(--brand);
+    border-radius: 999px; padding: 3px 9px;
+  }
+
+  @media (max-width: 620px){
+    .fridge-stage{ flex-direction: column; }
+    .side-panel{ min-height: 140px; }
+  }
+
+  /* try-the-app trigger (reused for the in-page "체험하기" button) */
+  .try-btn{
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background: var(--brand);
+    border: none;
+    border-radius: 999px;
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .try-btn:hover{ background: var(--brand-deep); }
+  .try-btn:focus-visible{ outline: 2px solid var(--brand-deep); outline-offset: 3px; }
+
+  /* app-experience modal */
+  .app-modal-backdrop{
+    position: fixed; inset: 0;
+    background: rgba(22,33,27,0.55);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    z-index: 100;
+  }
+  .app-modal-backdrop[hidden]{ display: none; }
+
+  /* ---- MVP test flow (opens inside the modal) ---- */
+  .mvp-modal{
+    position: relative;
+    width: min(640px, 100%);
+    max-height: 92vh;
+    overflow-y: auto;
+    border-radius: 24px;
+  }
+  .modal-x{
+    position: absolute; top: 14px; right: 14px; z-index: 5;
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink-soft); font-size: 15px; line-height: 1; cursor: pointer;
+  }
+  .modal-x:focus-visible{ outline: 2px solid var(--brand); outline-offset: 2px; }
+
+  .mvp-wrap{ padding: 46px 26px 8px; font-family: var(--sans); line-height: 1.55; }
+
+  .topline{ display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .topline .mark{
+    width: 34px; height: 34px; border: 2px solid var(--ink); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; flex: none;
+  }
+  .topline .mark svg{ width: 18px; height: 18px; }
+  .topline .title{ font-weight: 800; font-size: 16px; }
+
+  .progress{ display: flex; gap: 8px; margin-bottom: 26px; }
+  .progress .seg{ flex: 1; height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
+  .progress .seg i{ display: block; height: 100%; width: 0%; background: var(--brand); border-radius: 999px; transition: width 0.3s ease; }
+  .progress .seg.filled i{ width: 100%; }
+
+  .card{
+    background: var(--surface); border: 1px solid var(--line); border-radius: 20px;
+    padding: 30px 26px 26px; box-shadow: 0 10px 30px rgba(20,33,27,0.06);
+  }
+
+  .step[hidden]{ display: none; }
+  .hero-fridge{ display: flex; justify-content: center; margin: 0 0 16px; }
+  .hero-fridge svg{ display: block; }
+  .step-title{
+    font-family: var(--sans); font-weight: 800; font-size: 22px;
+    margin: 0 0 14px; line-height: 1.3; text-wrap: balance;
+  }
+  .mvp-modal .step[data-step="0"] .step-title{ text-align: center; }
+  .mvp-modal .step[data-step="0"] .step-sub{ text-align: center; margin-left: auto; margin-right: auto; }
+  .step-sub{ font-size: 14px; color: var(--ink-soft); margin: 0 0 24px; max-width: 52ch; }
+
+  .field{ margin-bottom: 22px; }
+  .field-label{ display: block; font-weight: 700; font-size: 13.5px; margin-bottom: 9px; }
+
+  .select-wrap{ position: relative; }
+  .select-wrap select{
+    width: 100%; padding: 12px 38px 12px 14px; border: 1px solid var(--line); border-radius: 10px;
+    font-family: var(--sans); font-size: 14px; background: var(--surface); color: var(--ink);
+    appearance: none; cursor: pointer;
+  }
+  .select-wrap select:focus-visible{ outline: 2px solid var(--brand); outline-offset: 1px; }
+  .select-wrap .chevron{
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-soft); pointer-events: none; font-size: 13px;
+  }
+
+  .pill-group{ display: flex; gap: 9px; flex-wrap: wrap; }
+  .pill-option{
+    padding: 9px 16px; border: 1.5px solid var(--line); border-radius: 10px;
+    background: var(--surface); font-family: var(--sans); font-size: 13.5px; font-weight: 600;
+    color: var(--ink); cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .pill-option:hover{ border-color: var(--brand); }
+  .pill-option:focus-visible{ outline: 2px solid var(--brand); outline-offset: 2px; }
+  .pill-option.selected{ border-color: var(--brand); background: var(--fresh-bg); color: var(--brand); font-weight: 700; }
+
+  .consent-box{
+    display: flex; gap: 12px; align-items: flex-start; background: var(--bg);
+    border: 1px solid var(--line); border-radius: 12px; padding: 15px 16px; margin: 4px 0 24px; cursor: pointer;
+  }
+  .consent-box input[type="checkbox"]{ width: 18px; height: 18px; margin-top: 2px; accent-color: var(--brand); flex: none; cursor: pointer; }
+  .consent-box .consent-text strong{ display: block; font-size: 13.5px; margin-bottom: 4px; }
+  .consent-box .consent-text span{ font-size: 12px; color: var(--ink-soft); line-height: 1.55; }
+
+  .camera-btn{
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: var(--sans); font-weight: 700; font-size: 14px; color: #fff;
+    background: var(--brand); border: none; border-radius: 12px; padding: 13px 16px;
+    cursor: pointer; transition: background 0.15s, opacity 0.15s; margin-bottom: 8px;
+  }
+  .camera-btn:hover{ background: var(--brand-deep); }
+  .camera-btn:disabled{ opacity: 0.7; cursor: default; }
+  .camera-status{ min-height: 18px; margin: 0 0 16px; font-family: var(--mono); font-size: 12px; color: var(--brand); text-align: center; }
+
+  .scan-result{ display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+  .scan-result[hidden]{ display: none; }
+
+  .recipe-preview{
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+    padding: 15px 17px; margin-bottom: 24px;
+  }
+  .recipe-preview-head{ display: flex; align-items: center; justify-content: space-between; margin-bottom: 9px; }
+  .recipe-preview-head strong{ font-size: 14.5px; }
+  .match-pill{
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    background: var(--soon-bg); color: var(--soon); padding: 2px 9px; border-radius: 999px;
+  }
+  .ingredient-mini{ display: flex; gap: 8px; flex-wrap: wrap; font-size: 12px; }
+  .ingredient-mini span{ padding: 4px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+  .ingredient-mini .have{ color: var(--fresh); border-color: var(--fresh-bg); }
+  .ingredient-mini .miss{ color: #9AA69A; }
+
+  .text-input{
+    width: 100%; font-family: var(--sans); font-size: 14px; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; resize: vertical;
+    background: var(--surface);
+  }
+  .text-input:focus-visible{ outline: 2px solid var(--brand); outline-offset: 1px; }
+
+  .done-state{ text-align: center; padding: 16px 0 4px; }
+  .done-icon{
+    width: 48px; height: 48px; border-radius: 50%; background: var(--fresh-bg); color: var(--fresh);
+    display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700;
+    margin: 0 auto 18px;
+  }
+  .done-state .step-sub{ margin: 0 auto 14px; }
+  .fine-print{ font-size: 11.5px; color: #93a094; max-width: 46ch; margin: 0 auto; }
+
+  .actions{ display: flex; align-items: center; justify-content: space-between; margin-top: 6px; gap: 14px; }
+  .back-link{
+    font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--ink-soft);
+    background: none; border: none; cursor: pointer; padding: 4px 0;
+  }
+  .back-link:hover{ color: var(--brand); }
+  .back-link[hidden]{ visibility: hidden; }
+
+  .primary-btn{
+    font-family: var(--sans); font-weight: 700; font-size: 14px; color: #fff;
+    background: var(--brand); border: none; border-radius: 12px; padding: 12px 24px;
+    cursor: pointer; transition: background 0.15s, opacity 0.15s; margin-left: auto;
+  }
+  .primary-btn:hover:not(:disabled){ background: var(--brand-deep); }
+  .primary-btn:disabled{ background: #B7C4B4; cursor: not-allowed; }
+  .primary-btn:focus-visible{ outline: 2px solid var(--brand-deep); outline-offset: 3px; }
+
+  /* screen navigation */
+  .screen[hidden]{ display: none; }
+  @keyframes screenIn{ from{ opacity: 0; transform: translateY(14px); } to{ opacity: 1; transform: translateY(0); } }
+  .screen.enter{ animation: screenIn 0.4s ease; }
+
+  @media (prefers-reduced-motion: reduce){
+    .scan-line{ animation: none !important; }
+    .item, .tag, .bubble, .panel-blank, .panel-list{ transition: none !important; }
+    .screen.enter, .slide.enter{ animation: none !important; }
+  }
+</style>
+
+<div class="screen hero-screen" id="screenIntro">
+  <div class="hero-shell">
+
+    <header class="topbar">
+      <span class="logo">나만의 냉장고</span>
+      <nav>
+        <button type="button" class="nav-to-detail" data-slide="0">기능</button>
+        <button type="button" class="nav-to-detail" data-slide="1">커뮤니티</button>
+        <button type="button" class="nav-to-detail" data-slide="2">레시피</button>
+      </nav>
+      <button type="button" class="topbar-pill nav-to-detail" data-slide="0">더 알아보기</button>
+    </header>
+
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="hero-eyebrow">냉장고 속을 잊지 않게 🧊</p>
+        <h1>뭐가 있는지,<br>잊지 않게</h1>
+        <p class="hero-sub">냉장고 속 식재료와 유통기한을 사진 한 장으로 정리하는 AI 냉장고 관리 앱</p>
+        <p class="hero-status">출시 준비 중 · 체험 버전 먼저 만나보기</p>
+        <div class="hero-cta-row">
+          <button type="button" class="hero-cta" id="nextBtn">더 알아보기 →</button>
+          <button type="button" class="hero-link" id="skipToTry">지금 바로 체험하기 →</button>
+        </div>
+        <p class="hero-disclaimer">* 이 페이지는 방향 확인용 이미지 데모입니다. 실제 앱 화면이 아닙니다.</p>
+      </div>
+
+      <div class="hero-visual">
+        <div class="stage-card">
+          <div class="stage-demo">
+            <div class="fridge-stage">
+              <div class="fridge-interior" data-scene="problem" id="fridgeInterior">
+                <div class="bubble">어... 이거 또 있었네.</div>
+                <div class="scan-line"></div>
+
+                <div class="shelf">
+                  <div class="item flagged">
+                    <svg viewBox="0 0 44 44"><rect x="14" y="8" width="16" height="30" rx="3" fill="#EFE7DA" stroke="#B9AE97" stroke-width="1.5"/><path d="M17 8 L22 2 L27 8 Z" fill="#EFE7DA" stroke="#B9AE97" stroke-width="1.5"/></svg>
+                    <span class="tag bad">우유 · D+2 지남</span>
+                  </div>
+                  <div class="item">
+                    <svg viewBox="0 0 44 44"><ellipse cx="22" cy="26" rx="15" ry="10" fill="#8FBF7A"/><ellipse cx="22" cy="18" rx="11" ry="8" fill="#A7CE93"/></svg>
+                    <span class="tag soon">상추 · D-1</span>
+                  </div>
+                  <div class="item">
+                    <svg viewBox="0 0 44 44"><rect x="8" y="16" width="28" height="18" rx="4" fill="#EDE0C8" stroke="#C7B78F" stroke-width="1.5"/><circle cx="16" cy="25" r="4" fill="#fff" stroke="#C7B78F"/><circle cx="28" cy="25" r="4" fill="#fff" stroke="#C7B78F"/></svg>
+                    <span class="tag fresh">계란 · D-9</span>
+                  </div>
+                </div>
+                <div class="shelf">
+                  <div class="item">
+                    <svg viewBox="0 0 44 44"><circle cx="22" cy="24" r="13" fill="#C85C4A"/><path d="M22 11 q3 -6 8 -5" stroke="#5C7A46" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+                    <span class="tag fresh">사과 · D-11</span>
+                  </div>
+                  <div class="item">
+                    <svg viewBox="0 0 44 44"><rect x="11" y="10" width="22" height="26" rx="10" fill="#F4F2E8" stroke="#D8D2BC" stroke-width="1.5"/></svg>
+                    <span class="tag soon">요거트 · D-3</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="side-panel" data-scene="problem">
+                <div class="panel-blank">뭐가 있었더라...</div>
+                <div class="panel-list">
+                  <h3>보유 식재료</h3>
+                  <div class="list-row bad"><span>우유</span><span class="dday">D+2 지남</span></div>
+                  <div class="list-row soon"><span>상추</span><span class="dday">D-1</span></div>
+                  <div class="list-row fresh"><span>계란</span><span class="dday">D-9</span></div>
+                  <div class="list-row fresh"><span>사과</span><span class="dday">D-11</span></div>
+                  <div class="list-row soon"><span>요거트</span><span class="dday">D-3</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stage-barfoot">
+            <p class="stage-caption" id="stageCaption">냉장고를 열 때마다 뭐가 있었는지 가물가물 — 결국 또 사고, 결국 또 버린다.</p>
+            <div class="stage-tabs" role="tablist" aria-label="장면 전환">
+              <button class="tab active" data-scene="problem" role="tab" aria-selected="true">01 문제</button>
+              <button class="tab" data-scene="solution" role="tab" aria-selected="false">02 해결</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="screen hero-screen" id="screenDetail" hidden>
+  <div class="hero-shell">
+
+    <header class="topbar">
+      <span class="logo">나만의 냉장고</span>
+      <nav>
+        <button type="button" class="slide-nav-link" data-slide="0">기능</button>
+        <button type="button" class="slide-nav-link" data-slide="1">커뮤니티</button>
+        <button type="button" class="slide-nav-link" data-slide="2">레시피</button>
+        <button type="button" class="slide-nav-link" data-slide="3">체험하기</button>
+      </nav>
+      <button type="button" class="topbar-pill" id="backBtn">처음으로</button>
+    </header>
+
+    <div class="slides" id="slidesWrap">
+
+      <section class="slide" data-slide="0">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="hero-eyebrow">핵심 기능</p>
+            <h1>냉장고부터<br>똑똑하게</h1>
+            <p class="hero-sub">사진 한 장으로 식재료와 유통기한을 정리해요. 다시 사거나, 놓쳐서 버리는 일을 줄여줘요.</p>
+          </div>
+          <div class="hero-visual">
+            <div class="stage-card">
+              <div class="stage-demo">
+                <div class="mini-feature">
+                  <span class="stamp">촬영 인식</span>
+                  <div class="mini-feature-text">
+                    <h4>사진 한 장으로</h4>
+                    <p>장 본 식품을 냉장고에 넣기 전에 촬영하면 AI가 품목과 유통기한을 자동으로 인식해요.</p>
+                  </div>
+                </div>
+                <div class="mini-feature">
+                  <span class="stamp">기한 알림</span>
+                  <div class="mini-feature-text">
+                    <h4>먼저 알려줘요</h4>
+                    <p>유통기한이 다가오는 식재료를 놓치기 전에 알려드려요.</p>
+                  </div>
+                </div>
+                <div class="mini-feature">
+                  <span class="stamp">재구매 방지</span>
+                  <div class="mini-feature-text">
+                    <h4>있는지 확인하고</h4>
+                    <p>이미 있는 재료를 또 사지 않도록 보유 현황을 한눈에.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-barfoot">
+                <p class="stage-caption">핵심 기능 3가지</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="1" hidden>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="hero-eyebrow">커뮤니티</p>
+            <h1>다른 냉장고도<br>구경해요</h1>
+            <p class="hero-sub">내 냉장고만 보는 게 아니라, 다른 사람들은 뭘 채워두고 어떻게 관리하는지 둘러보며 아이디어를 얻을 수 있어요.</p>
+          </div>
+          <div class="hero-visual">
+            <div class="stage-card">
+              <div class="stage-demo">
+                <div class="fridge-feed">
+                  <div class="mini-fridge">
+                    <span class="badge">공개</span>
+                    <div class="mini-user"><span class="avatar" style="background:var(--brand)"></span><span>수아</span></div>
+                    <div class="mini-items">
+                      <svg viewBox="0 0 44 44"><ellipse cx="22" cy="26" rx="15" ry="10" fill="#8FBF7A"/><ellipse cx="22" cy="18" rx="11" ry="8" fill="#A7CE93"/></svg>
+                      <svg viewBox="0 0 44 44"><circle cx="22" cy="24" r="13" fill="#C85C4A"/></svg>
+                      <svg viewBox="0 0 44 44"><rect x="8" y="16" width="28" height="18" rx="4" fill="#EDE0C8" stroke="#C7B78F" stroke-width="1.5"/></svg>
+                    </div>
+                  </div>
+                  <div class="mini-fridge">
+                    <span class="badge">공개</span>
+                    <div class="mini-user"><span class="avatar" style="background:var(--soon)"></span><span>재하</span></div>
+                    <div class="mini-items">
+                      <svg viewBox="0 0 44 44"><rect x="14" y="8" width="16" height="30" rx="3" fill="#EFE7DA" stroke="#B9AE97" stroke-width="1.5"/></svg>
+                      <svg viewBox="0 0 44 44"><rect x="11" y="10" width="22" height="26" rx="10" fill="#F4F2E8" stroke="#D8D2BC" stroke-width="1.5"/></svg>
+                    </div>
+                  </div>
+                  <div class="mini-fridge">
+                    <span class="badge">공개</span>
+                    <div class="mini-user"><span class="avatar" style="background:#7C8B78"></span><span>은비</span></div>
+                    <div class="mini-items">
+                      <svg viewBox="0 0 44 44"><circle cx="22" cy="24" r="13" fill="#C85C4A"/></svg>
+                      <svg viewBox="0 0 44 44"><ellipse cx="22" cy="26" rx="15" ry="10" fill="#8FBF7A"/><ellipse cx="22" cy="18" rx="11" ry="8" fill="#A7CE93"/></svg>
+                      <svg viewBox="0 0 44 44"><rect x="8" y="16" width="28" height="18" rx="4" fill="#EDE0C8" stroke="#C7B78F" stroke-width="1.5"/></svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-barfoot">
+                <p class="stage-caption">커뮤니티 피드 미리보기</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2" hidden>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="hero-eyebrow">레시피 · 밀키트</p>
+            <h1>레시피 올리면<br>장보기까지</h1>
+            <p class="hero-sub">레시피를 올리면 내 냉장고 재료와 자동 매칭되고, 부족한 재료는 밀키트로 바로 연결돼요.</p>
+          </div>
+          <div class="hero-visual">
+            <div class="stage-card">
+              <div class="stage-demo">
+                <div class="recipe-card">
+                  <div class="recipe-photo">
+                    <svg viewBox="0 0 60 60"><ellipse cx="30" cy="40" rx="24" ry="10" fill="#E8DCC3"/><ellipse cx="30" cy="34" rx="22" ry="9" fill="#F6EFE0"/><circle cx="22" cy="32" r="4" fill="#C85C4A"/><circle cx="32" cy="30" r="3.5" fill="#8FBF7A"/><circle cx="38" cy="33" r="3" fill="#EDCB5D"/></svg>
+                  </div>
+                  <div class="recipe-info">
+                    <h4>계란 상추 비빔밥</h4>
+                    <span class="match-badge">냉장고 재료 3/4 보유</span>
+                    <div class="ingredient-list">
+                      <div class="ingredient-row have"><span class="dot"></span><span>계란</span></div>
+                      <div class="ingredient-row have"><span class="dot"></span><span>상추</span></div>
+                      <div class="ingredient-row have"><span class="dot"></span><span>밥</span></div>
+                      <div class="ingredient-row miss"><span class="dot"></span><span>고추장 · 없음</span></div>
+                    </div>
+                  </div>
+                </div>
+                <p class="connector" style="margin: 14px 0 10px;">부족한 재료 1개 → 이 레시피와 어울리는 밀키트</p>
+                <div class="mealkit-row">
+                  <div class="mealkit-card">
+                    <div class="mealkit-thumb"><svg viewBox="0 0 44 44"><rect x="8" y="12" width="28" height="24" rx="3" fill="#DCE7D5" stroke="#B7C7AC" stroke-width="1.5"/><line x1="8" y1="20" x2="36" y2="20" stroke="#B7C7AC" stroke-width="1.5"/><line x1="22" y1="12" x2="22" y2="36" stroke="#B7C7AC" stroke-width="1.5"/></svg></div>
+                    <h5>고추장 비빔 소스 키트</h5>
+                    <span class="mealkit-price">8,900원</span>
+                    <span class="mealkit-cta">바로 구매</span>
+                  </div>
+                  <div class="mealkit-card">
+                    <div class="mealkit-thumb"><svg viewBox="0 0 44 44"><rect x="8" y="12" width="28" height="24" rx="3" fill="#DCE7D5" stroke="#B7C7AC" stroke-width="1.5"/><line x1="8" y1="20" x2="36" y2="20" stroke="#B7C7AC" stroke-width="1.5"/><line x1="22" y1="12" x2="22" y2="36" stroke="#B7C7AC" stroke-width="1.5"/></svg></div>
+                    <h5>비빔밥 재료 정기 구독</h5>
+                    <span class="mealkit-price">월 19,900원</span>
+                    <span class="mealkit-cta">정기 구독</span>
+                  </div>
+                </div>
+              </div>
+              <div class="stage-barfoot">
+                <p class="stage-caption">레시피 → 부족한 재료 → 밀키트</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="3" hidden>
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <p class="hero-eyebrow">마지막으로</p>
+            <h1>이제 직접<br>써볼 차례</h1>
+            <p class="hero-sub">촬영하기 버튼도, 글쓰기 버튼도 실제로 눌러볼 수 있어요. 진짜 앱을 쓰는 것처럼요.</p>
+            <p class="slide-trust">서울시·한국농촌경제연구원(KREI) 자료에 따르면, 1인가구는 <strong>보유 식재료를 파악하지 못해 재구매하거나 기한을 놓쳐 폐기</strong>하는 경우가 반복되는 것으로 나타납니다.</p>
+            <button type="button" class="ghost-btn" id="notifyBtn">출시 알림 받기</button>
+            <p class="hero-disclaimer">* 실제 전환 문구·수단(사전예약/앱스토어 알림 등)은 아직 미확정 — 프로모션 코어 확정 후 교체 예정</p>
+          </div>
+          <div class="hero-visual">
+            <div class="stage-card">
+              <div class="stage-demo">
+                <p class="slide-flow-caption">촬영부터 공유까지, 하나의 흐름으로 이어져요</p>
+                <div class="slide-flow">
+                  <div class="slide-flow-step"><span class="node">1</span><span>촬영</span></div>
+                  <div class="slide-flow-step"><span class="node">2</span><span>재고 정리</span></div>
+                  <div class="slide-flow-step"><span class="node">3</span><span>레시피 매칭</span></div>
+                  <div class="slide-flow-step"><span class="node">4</span><span>부족한 재료 구매</span></div>
+                  <div class="slide-flow-step"><span class="node">5</span><span>다른 사람과 공유</span></div>
+                </div>
+              </div>
+              <div class="stage-barfoot">
+                <p class="stage-caption">아래 "체험하기" 버튼을 눌러보세요</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="slide-nav">
+      <button type="button" class="slide-nav-btn prev" id="prevSlide" disabled>← 이전</button>
+      <div class="slide-dots" id="slideDots">
+        <button type="button" class="dot active" data-goto="0" aria-label="1번 화면"></button>
+        <button type="button" class="dot" data-goto="1" aria-label="2번 화면"></button>
+        <button type="button" class="dot" data-goto="2" aria-label="3번 화면"></button>
+        <button type="button" class="dot" data-goto="3" aria-label="4번 화면"></button>
+      </div>
+      <button type="button" class="slide-nav-btn next" id="nextSlide">다음 →</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="app-modal-backdrop" id="modalBackdrop" hidden>
+  <div class="mvp-modal" role="dialog" aria-modal="true" aria-label="나만의 냉장고 MVP 테스트">
+    <button type="button" class="modal-x" id="modalClose" aria-label="닫기">×</button>
+
+    <div class="mvp-wrap">
+      <div class="topline">
+        <span class="mark">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="2" width="16" height="20" rx="3" stroke="currentColor" stroke-width="1.8"/><line x1="4" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="1.8"/></svg>
+        </span>
+        <span class="title">나만의 냉장고 MVP</span>
+      </div>
+
+      <div class="progress" id="mvpProgress">
+        <div class="seg" data-seg="0"><i></i></div>
+        <div class="seg" data-seg="1"><i></i></div>
+        <div class="seg" data-seg="2"><i></i></div>
+        <div class="seg" data-seg="3"><i></i></div>
+        <div class="seg" data-seg="4"><i></i></div>
+      </div>
+
+      <div class="card">
+
+        <section class="step" data-step="0">
+          <div class="hero-fridge" aria-hidden="true">
+            <svg viewBox="0 0 120 148" width="80" height="98" xmlns="http://www.w3.org/2000/svg">
+              <rect x="14" y="6" width="92" height="136" rx="20" fill="#E4EFE1" stroke="#1F5C4B" stroke-width="3"/>
+              <line x1="14" y1="54" x2="106" y2="54" stroke="#1F5C4B" stroke-width="3"/>
+              <rect x="87" y="18" width="6" height="20" rx="3" fill="#1F5C4B"/>
+              <rect x="87" y="66" width="6" height="28" rx="3" fill="#1F5C4B"/>
+              <circle cx="86" cy="20" r="15" fill="#F5EAD4" stroke="#C58A2E" stroke-width="2.4"/>
+              <path d="M79 20.5 L84 25.5 L93 14.5" fill="none" stroke="#C58A2E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="26" y="76" width="20" height="20" rx="5" fill="#E6F0E4" stroke="#4C8F52" stroke-width="2.2" transform="rotate(-6 36 86)"/>
+              <rect x="50" y="84" width="16" height="16" rx="4" fill="#F2E1DC" stroke="#AE4632" stroke-width="2.2" transform="rotate(5 58 92)"/>
+            </svg>
+          </div>
+          <h2 class="step-title">장 본 식품, 유통기한까지 잘 챙기고 계신가요?</h2>
+          <p class="step-sub">장 보고 온 식품을 냉장고에 넣을 때 사진 한 장으로 품목과 유통기한을 자동으로 기록해주는 방식이 실제로 도움이 되는지 검증하는 테스트입니다.</p>
+
+          <div class="field">
+            <label class="field-label" for="ageSelect">연령대</label>
+            <div class="select-wrap">
+              <select id="ageSelect">
+                <option value="">선택해주세요</option>
+                <option value="10대">10대</option>
+                <option value="20대">20대</option>
+                <option value="30대">30대</option>
+                <option value="40대 이상">40대 이상</option>
+              </select>
+              <span class="chevron">▾</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <p class="field-label">현재 1인가구인가요?</p>
+            <div class="pill-group" data-group="household">
+              <button type="button" class="pill-option" data-value="예">예</button>
+              <button type="button" class="pill-option" data-value="아니오">아니오</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <p class="field-label">현재 상태</p>
+            <div class="pill-group" data-group="status">
+              <button type="button" class="pill-option" data-value="직장인">직장인</button>
+              <button type="button" class="pill-option" data-value="대학생">대학생</button>
+              <button type="button" class="pill-option" data-value="그 외">그 외</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <p class="field-label">최근 냉장고에 이미 있는 식품을 잊고 다시 산 경험이 있나요?</p>
+            <div class="pill-group" data-group="rebuy">
+              <button type="button" class="pill-option" data-value="있어요">있어요</button>
+              <button type="button" class="pill-option" data-value="없어요">없어요</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <p class="field-label">최근 식품의 기한을 놓쳐 버린 경험이 있나요?</p>
+            <div class="pill-group" data-group="expired">
+              <button type="button" class="pill-option" data-value="있어요">있어요</button>
+              <button type="button" class="pill-option" data-value="없어요">없어요</button>
+            </div>
+          </div>
+
+          <label class="consent-box">
+            <input type="checkbox" id="consentCheck" />
+            <span class="consent-text">
+              <strong>MVP 테스트 데이터 수집 및 이용에 동의합니다.</strong>
+              <span>입력한 응답과 테스트 결과는 본 MVP의 사용자 문제 및 서비스 유용성 검증 목적으로 수집됩니다. 이름·연락처 등 불필요한 개인정보는 수집하지 않습니다.</span>
+            </span>
+          </label>
+        </section>
+
+        <section class="step" data-step="1" hidden>
+          <h2 class="step-title">장 본 식품, 넣기 전에 사진으로 유통기한까지 기록해보세요</h2>
+          <p class="step-sub">냉장고에 넣기 전 식품(또는 라벨)을 촬영하면 품목명과 유통기한을 자동으로 인식해요. 직접 찍은 사진이 없다면 예시 사진으로 진행해도 괜찮아요.</p>
+
+          <button type="button" class="camera-btn" id="camTestBtn">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="9" y="4" width="6" height="3" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="14" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            예시 식품 사진으로 인식 테스트하기
+          </button>
+          <p class="camera-status" id="camStatus"></p>
+
+          <div class="scan-result" id="scanResult" hidden>
+            <div class="list-row fresh"><span>계란</span><span class="dday">D-9</span></div>
+            <div class="list-row soon"><span>상추</span><span class="dday">D-1</span></div>
+            <div class="list-row bad"><span>우유</span><span class="dday">D+2 지남</span></div>
+          </div>
+
+          <div class="field" id="q1Field" hidden>
+            <p class="field-label">인식된 품목·유통기한이 실제 제품 라벨과 비슷한가요?</p>
+            <div class="pill-group" data-group="matchFeel">
+              <button type="button" class="pill-option" data-value="비슷해요">비슷해요</button>
+              <button type="button" class="pill-option" data-value="보통이에요">보통이에요</button>
+              <button type="button" class="pill-option" data-value="달라요">달라요</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-step="2" hidden>
+          <h2 class="step-title">등록한 재료로 레시피를 추천해드려요</h2>
+          <p class="step-sub">방금 등록한 재료를 기준으로 레시피를 매칭한 결과예요.</p>
+
+          <div class="recipe-preview">
+            <div class="recipe-preview-head">
+              <strong>계란 상추 비빔밥</strong>
+              <span class="match-pill">3/4 보유</span>
+            </div>
+            <div class="ingredient-mini">
+              <span class="have">계란</span><span class="have">상추</span><span class="have">밥</span><span class="miss">고추장 · 없음</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <p class="field-label">이 매칭이 실제로 도움이 될 것 같나요?</p>
+            <div class="pill-group" data-group="recipeHelp">
+              <button type="button" class="pill-option" data-value="매우 도움">매우 도움</button>
+              <button type="button" class="pill-option" data-value="약간 도움">약간 도움</button>
+              <button type="button" class="pill-option" data-value="보통">보통</button>
+              <button type="button" class="pill-option" data-value="도움 안 됨">도움 안 됨</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="step" data-step="3" hidden>
+          <h2 class="step-title">마지막으로 몇 가지만 더 여쭤볼게요</h2>
+
+          <div class="field">
+            <p class="field-label">이런 서비스가 있다면 사용해보고 싶으신가요?</p>
+            <div class="pill-group" data-group="willUse">
+              <button type="button" class="pill-option" data-value="예">예</button>
+              <button type="button" class="pill-option" data-value="아니오">아니오</button>
+              <button type="button" class="pill-option" data-value="잘 모르겠어요">잘 모르겠어요</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <p class="field-label">한 달에 얼마까지 낼 의향이 있으신가요?</p>
+            <div class="pill-group" data-group="willPay">
+              <button type="button" class="pill-option" data-value="없음">없음</button>
+              <button type="button" class="pill-option" data-value="3천원 미만">3천원 미만</button>
+              <button type="button" class="pill-option" data-value="3~5천원">3~5천원</button>
+              <button type="button" class="pill-option" data-value="5천원 이상">5천원 이상</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="freeText">더 해주고 싶은 말이 있다면 적어주세요 (선택)</label>
+            <textarea id="freeText" class="text-input" rows="3" placeholder="자유롭게 의견을 남겨주세요"></textarea>
+          </div>
+        </section>
+
+        <section class="step" data-step="4" hidden>
+          <div class="done-state">
+            <div class="done-icon">✓</div>
+            <h2 class="step-title">테스트에 참여해주셔서 감사합니다!</h2>
+            <p class="step-sub">응답해주신 내용은 서비스 개선에 소중하게 쓰일게요.</p>
+            <p class="fine-print">* 이 응답은 MVP 검증 목적으로만 사용되며, 개인 식별 정보는 수집하지 않습니다.</p>
+          </div>
+        </section>
+
+        <div class="actions" id="mvpActions">
+          <button type="button" class="back-link" id="mvpBackLink" hidden>← 이전</button>
+          <button type="button" class="primary-btn" id="mvpNextBtn" disabled>식품 등록 시작하기</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var interior = document.getElementById('fridgeInterior');
+    var panel = document.querySelector('.side-panel');
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+    var caption = document.getElementById('stageCaption');
+    var captions = {
+      problem: '냉장고를 열 때마다 뭐가 있었는지 가물가물 — 결국 또 사고, 결국 또 버린다.',
+      solution: '촬영 한 장이면 끝. AI가 식재료와 유통기한을 정리해 보여준다.'
+    };
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var current = 'problem';
+    var timer = null;
+
+    function setScene(scene){
+      current = scene;
+      interior.setAttribute('data-scene', scene);
+      panel.setAttribute('data-scene', scene);
+      caption.textContent = captions[scene];
+      tabs.forEach(function(t){
+        var active = t.getAttribute('data-scene') === scene;
+        t.classList.toggle('active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    function loop(){
+      timer = setInterval(function(){
+        setScene(current === 'problem' ? 'solution' : 'problem');
+      }, 4200);
+    }
+
+    tabs.forEach(function(t){
+      t.addEventListener('click', function(){
+        clearInterval(timer);
+        setScene(t.getAttribute('data-scene'));
+        if(!reduced){ loop(); }
+      });
+    });
+
+    setScene('problem');
+    if(!reduced){ loop(); }
+
+    // ---- screen navigation ----
+    var screenIntro = document.getElementById('screenIntro');
+    var screenDetail = document.getElementById('screenDetail');
+    var nextBtn = document.getElementById('nextBtn');
+    var backBtn = document.getElementById('backBtn');
+
+    function goToScreen(name, slideIndex){
+      var showEl = name === 'detail' ? screenDetail : screenIntro;
+      var hideEl = name === 'detail' ? screenIntro : screenDetail;
+      hideEl.hidden = true;
+      showEl.hidden = false;
+      window.scrollTo(0, 0);
+      if(name === 'detail'){ setSlide(typeof slideIndex === 'number' ? slideIndex : 0); }
+      if(!reduced){
+        showEl.classList.remove('enter');
+        void showEl.offsetWidth;
+        showEl.classList.add('enter');
+      }
+    }
+
+    nextBtn.addEventListener('click', function(){ goToScreen('detail', 0); });
+    backBtn.addEventListener('click', function(){ goToScreen('intro'); });
+
+    Array.prototype.slice.call(document.querySelectorAll('.nav-to-detail')).forEach(function(el){
+      el.addEventListener('click', function(){
+        var slideAttr = el.getAttribute('data-slide');
+        goToScreen('detail', slideAttr !== null ? parseInt(slideAttr, 10) : 0);
+      });
+    });
+
+    // ---- slides (within screen 2) ----
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var prevSlideBtn = document.getElementById('prevSlide');
+    var nextSlideBtn = document.getElementById('nextSlide');
+    var dots = Array.prototype.slice.call(document.querySelectorAll('.dot'));
+    var slideNavLinks = Array.prototype.slice.call(document.querySelectorAll('.slide-nav-link'));
+    var totalSlides = slides.length;
+    var currentSlide = 0;
+
+    function renderSlideNav(){
+      slides.forEach(function(s){
+        s.hidden = parseInt(s.getAttribute('data-slide'), 10) !== currentSlide;
+      });
+      dots.forEach(function(d){
+        d.classList.toggle('active', parseInt(d.getAttribute('data-goto'), 10) === currentSlide);
+      });
+      slideNavLinks.forEach(function(l){
+        l.classList.toggle('active', parseInt(l.getAttribute('data-slide'), 10) === currentSlide);
+      });
+      prevSlideBtn.disabled = currentSlide === 0;
+      nextSlideBtn.textContent = currentSlide === totalSlides - 1 ? '체험하기 →' : '다음 →';
+    }
+
+    function setSlide(idx){
+      currentSlide = Math.max(0, Math.min(totalSlides - 1, idx));
+      renderSlideNav();
+      var activeSlide = slides[currentSlide];
+      if(!reduced && activeSlide){
+        activeSlide.classList.remove('enter');
+        void activeSlide.offsetWidth;
+        activeSlide.classList.add('enter');
+      }
+    }
+
+    prevSlideBtn.addEventListener('click', function(){ setSlide(currentSlide - 1); });
+    nextSlideBtn.addEventListener('click', function(){
+      if(currentSlide === totalSlides - 1){
+        openModal(nextSlideBtn);
+      } else {
+        setSlide(currentSlide + 1);
+      }
+    });
+    dots.forEach(function(d){
+      d.addEventListener('click', function(){ setSlide(parseInt(d.getAttribute('data-goto'), 10)); });
+    });
+    slideNavLinks.forEach(function(l){
+      l.addEventListener('click', function(){ setSlide(parseInt(l.getAttribute('data-slide'), 10)); });
+    });
+
+    renderSlideNav();
+
+    var notifyBtn = document.getElementById('notifyBtn');
+    notifyBtn.addEventListener('click', function(){
+      notifyBtn.textContent = '알림 신청 완료';
+      notifyBtn.disabled = true;
+    });
+
+    // ---- app experience modal (opens the MVP test flow) ----
+    var modalBackdrop = document.getElementById('modalBackdrop');
+    var modalClose = document.getElementById('modalClose');
+    var modalTrigger = null;
+
+    function onKeydown(e){
+      if(e.key === 'Escape'){ closeModal(); }
+    }
+    function openModal(triggerEl){
+      modalTrigger = triggerEl || null;
+      modalBackdrop.hidden = false;
+      resetMvpFlow();
+      modalClose.focus();
+      document.addEventListener('keydown', onKeydown);
+    }
+    function closeModal(){
+      modalBackdrop.hidden = true;
+      document.removeEventListener('keydown', onKeydown);
+      if(modalTrigger){ modalTrigger.focus(); }
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', function(e){
+      if(e.target === modalBackdrop){ closeModal(); }
+    });
+
+    var skipToTry = document.getElementById('skipToTry');
+    skipToTry.addEventListener('click', function(){
+      goToScreen('detail', 0);
+      openModal(skipToTry);
+    });
+
+    // ---- MVP test flow (5-step screener) ----
+    var MVP_TOTAL_STEPS = 5;
+    var mvpStep = 0;
+    var mvpAnswers = {};
+
+    var mvpSteps = Array.prototype.slice.call(document.querySelectorAll('.mvp-modal .step'));
+    var mvpSegs = Array.prototype.slice.call(document.querySelectorAll('#mvpProgress .seg'));
+    var mvpBackLink = document.getElementById('mvpBackLink');
+    var mvpNextBtn = document.getElementById('mvpNextBtn');
+    var mvpActions = document.getElementById('mvpActions');
+    var ageSelect = document.getElementById('ageSelect');
+    var consentCheck = document.getElementById('consentCheck');
+
+    var mvpNextLabels = ['식품 등록 시작하기', '다음 →', '다음 →', '제출하기', ''];
+
+    Array.prototype.slice.call(document.querySelectorAll('.mvp-modal .pill-group')).forEach(function(group){
+      var groupName = group.getAttribute('data-group');
+      Array.prototype.slice.call(group.querySelectorAll('.pill-option')).forEach(function(btn){
+        btn.addEventListener('click', function(){
+          Array.prototype.slice.call(group.querySelectorAll('.pill-option')).forEach(function(b){
+            b.classList.toggle('selected', b === btn);
+          });
+          mvpAnswers[groupName] = btn.getAttribute('data-value');
+          updateMvpNextEnabled();
+        });
+      });
+    });
+
+    ageSelect.addEventListener('change', function(){
+      mvpAnswers.age = ageSelect.value;
+      updateMvpNextEnabled();
+    });
+    consentCheck.addEventListener('change', function(){
+      mvpAnswers.consent = consentCheck.checked;
+      updateMvpNextEnabled();
+    });
+
+    function mvpValidStep(step){
+      if(step === 0){
+        return !!(mvpAnswers.age && mvpAnswers.household && mvpAnswers.status && mvpAnswers.rebuy && mvpAnswers.expired && mvpAnswers.consent);
+      }
+      if(step === 1){ return !!mvpAnswers.matchFeel; }
+      if(step === 2){ return !!mvpAnswers.recipeHelp; }
+      if(step === 3){ return !!(mvpAnswers.willUse && mvpAnswers.willPay); }
+      return true;
+    }
+
+    function updateMvpNextEnabled(){
+      mvpNextBtn.disabled = !mvpValidStep(mvpStep);
+    }
+
+    function renderMvpStep(){
+      mvpSteps.forEach(function(s){
+        s.hidden = parseInt(s.getAttribute('data-step'), 10) !== mvpStep;
+      });
+      mvpSegs.forEach(function(seg){
+        seg.classList.toggle('filled', parseInt(seg.getAttribute('data-seg'), 10) <= mvpStep);
+      });
+      mvpBackLink.hidden = mvpStep === 0 || mvpStep === MVP_TOTAL_STEPS - 1;
+      if(mvpStep === MVP_TOTAL_STEPS - 1){
+        mvpActions.style.display = 'none';
+      } else {
+        mvpActions.style.display = '';
+        mvpNextBtn.textContent = mvpNextLabels[mvpStep];
+      }
+      updateMvpNextEnabled();
+    }
+
+    function mvpGoNext(){
+      if(!mvpValidStep(mvpStep)){ return; }
+      if(mvpStep < MVP_TOTAL_STEPS - 1){
+        mvpStep++;
+        renderMvpStep();
+      }
+    }
+    function mvpGoBack(){
+      if(mvpStep > 0){
+        mvpStep--;
+        renderMvpStep();
+      }
+    }
+
+    mvpNextBtn.addEventListener('click', mvpGoNext);
+    mvpBackLink.addEventListener('click', mvpGoBack);
+
+    var camTestBtn = document.getElementById('camTestBtn');
+    var camStatus = document.getElementById('camStatus');
+    camTestBtn.addEventListener('click', function(){
+      camTestBtn.disabled = true;
+      camStatus.textContent = '인식 중...';
+      setTimeout(function(){
+        document.getElementById('scanResult').hidden = false;
+        document.getElementById('q1Field').hidden = false;
+        camStatus.textContent = '3개 식품 유통기한 인식 완료';
+        camTestBtn.disabled = false;
+      }, 900);
+    });
+
+    function resetMvpFlow(){
+      mvpStep = 0;
+      mvpAnswers = {};
+      ageSelect.value = '';
+      consentCheck.checked = false;
+      Array.prototype.slice.call(document.querySelectorAll('.mvp-modal .pill-option')).forEach(function(b){
+        b.classList.remove('selected');
+      });
+      document.getElementById('scanResult').hidden = true;
+      document.getElementById('q1Field').hidden = true;
+      camStatus.textContent = '';
+      camTestBtn.disabled = false;
+      document.getElementById('freeText').value = '';
+      renderMvpStep();
+    }
+
+    renderMvpStep();
+  })();
+</script>
+
+</body></html>
